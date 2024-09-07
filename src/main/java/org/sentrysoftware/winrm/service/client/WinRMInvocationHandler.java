@@ -40,17 +40,16 @@ import java.util.stream.Stream;
 
 import javax.net.ssl.TrustManager;
 import javax.xml.namespace.QName;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.WebServiceException;
-import javax.xml.ws.handler.Handler;
-import javax.xml.ws.soap.SOAPFaultException;
+import jakarta.xml.ws.BindingProvider;
+import jakarta.xml.ws.WebServiceException;
+import jakarta.xml.ws.handler.Handler;
+import jakarta.xml.ws.soap.SOAPFaultException;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.binding.soap.SoapBindingConstants;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.service.model.ServiceInfo;
 import org.apache.cxf.transport.http.HTTPConduitFactory;
@@ -69,6 +68,7 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.impl.auth.KerberosSchemeFactory;
 import org.apache.neethi.Policy;
 import org.apache.neethi.builders.PrimitiveAssertion;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
 import org.sentrysoftware.winrm.WinRMHttpProtocolEnum;
 import org.sentrysoftware.winrm.Utils;
@@ -398,7 +398,6 @@ public class WinRMInvocationHandler implements InvocationHandler {
 	}
 
 	static WinRMWebService createWinRMWebService(final WinRMEndpoint winRMEndpoint, final Bus bus) {
-
 		final JaxWsProxyFactoryBean jaxWsProxyFactoryBean = new JaxWsProxyFactoryBean();
 		jaxWsProxyFactoryBean.setServiceName(SERVICE);
 		jaxWsProxyFactoryBean.setEndpointName(PORT);

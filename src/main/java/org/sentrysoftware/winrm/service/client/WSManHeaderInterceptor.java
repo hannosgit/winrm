@@ -22,8 +22,8 @@ package org.sentrysoftware.winrm.service.client;
 
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
 
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
@@ -43,39 +43,39 @@ import org.sentrysoftware.winrm.service.wsman.ObjectFactory;
  */
 public class WSManHeaderInterceptor extends AbstractSoapInterceptor {
 
-	private static final JAXBDataBinding ATTRIBUTABLE_URI_JAXB_DATA_BINDING;
-	static {
-		try {
-			ATTRIBUTABLE_URI_JAXB_DATA_BINDING = new JAXBDataBinding(AttributableURI.class);
-		} catch (final JAXBException e) {
-			throw new RuntimeException(
-					"Failed to create JAXBDataBinding for: AttributableURI" + AttributableURI.class,
-					e);
-		}
-	}
+    private static final JAXBDataBinding ATTRIBUTABLE_URI_JAXB_DATA_BINDING;
 
-	private final String resourceUri;
+    static {
+        try {
+            ATTRIBUTABLE_URI_JAXB_DATA_BINDING = new JAXBDataBinding(AttributableURI.class);
+        } catch (final JAXBException e) {
+            throw new RuntimeException(
+                    "Failed to create JAXBDataBinding for: AttributableURI" + AttributableURI.class,
+                    e);
+        }
+    }
 
-	public WSManHeaderInterceptor(final String resourceUri) {
-		super(Phase.POST_LOGICAL);
+    private final String resourceUri;
 
-		addAfter(SoapPreProtocolOutInterceptor.class.getName());
+    public WSManHeaderInterceptor(final String resourceUri) {
+        super(Phase.POST_LOGICAL);
 
-		Utils.checkNonNull(resourceUri, "resourceUri");
+        addAfter(SoapPreProtocolOutInterceptor.class.getName());
 
-		this.resourceUri = resourceUri;
-	}
+        Utils.checkNonNull(resourceUri, "resourceUri");
 
-	@Override
-	public void handleMessage(final SoapMessage message) throws Fault {
+        this.resourceUri = resourceUri;
+    }
 
-		final JAXBElement<String> resourceURI = new ObjectFactory().createResourceURI(resourceUri);
+    @Override
+    public void handleMessage(final SoapMessage message) throws Fault {
+        final JAXBElement<String> resourceURI = new ObjectFactory().createResourceURI(resourceUri);
 
-		final List<Header> headers = message.getHeaders();
-		headers.add(
-				new Header(resourceURI.getName(), resourceURI, ATTRIBUTABLE_URI_JAXB_DATA_BINDING));
+        final List<Header> headers = message.getHeaders();
+        headers.add(
+                new Header(resourceURI.getName(), resourceURI, ATTRIBUTABLE_URI_JAXB_DATA_BINDING));
 
-		message.put(Header.HEADER_LIST, headers);
-	}
+        message.put(Header.HEADER_LIST, headers);
+    }
 
 }
